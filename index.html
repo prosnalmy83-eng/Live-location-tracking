@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSM ANWARUL Tracker</title>
+<style>
+  body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#0f172a;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
+  }
+  h1 {
+    font-size: 3rem;
+    color: #38bdf8;
+    text-align:center;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8;
+    animation: glow 1.5s infinite alternate;
+  }
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8; }
+    to { text-shadow: 0 0 20px #0ff, 0 0 30px #0ff; }
+  }
+  .box {
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    width:90%;
+    max-width:400px;
+  }
+  button {
+    width:100%;
+    padding:12px;
+    border:2px solid #38bdf8;
+    background:none;
+    color:#38bdf8;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:16px;
+  }
+  button:hover {
+    background:#38bdf8;
+    color:#000;
+    transform:scale(1.05);
+  }
+  #output {
+    margin-top:20px;
+    font-size:14px;
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+
+<h1>GSM ANWARUL</h1>
+
+<div class="box">
+  <button onclick="getLocation()">📍 Get Location</button>
+  <p id="output"></p>
+</div>
+
+<script>
+function getLocation() {
+  const output = document.getElementById("output");
+
+  if(!navigator.geolocation){
+    output.innerHTML = "❌ Geolocation not supported by your browser";
+    return;
+  }
+
+  output.innerHTML = "⏳ Getting location...";
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      output.innerHTML = `
+        ✅ Location Found<br>
+        🌍 Latitude: ${lat}<br>
+        📍 Longitude: ${lon}<br><br>
+        <a href="https://maps.google.com/?q=${lat},${lon}" target="_blank" style="color:#38bdf8;">Open in Google Maps</a>
+      `;
+    },
+    (error) => {
+      if(error.code === error.PERMISSION_DENIED){
+        output.innerHTML = "❌ Permission denied. Please allow location access.";
+      } else {
+        output.innerHTML = "❌ Error getting location.";
+      }
+    }
+  );
+}
+</script>
+
+</body>
+</html>
